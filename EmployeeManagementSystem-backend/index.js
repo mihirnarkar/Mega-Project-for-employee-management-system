@@ -3,6 +3,12 @@ const mysql = require('mysql2');
 const bodyparser = require('body-parser');
 const cors = require('cors');
 
+// using json web token:-
+const jwt = require('jsonwebtoken');
+
+// Sample secret key for jwt:-
+const secretKey = 'srushti';
+
 const app = express();
 const port = 3000;
 
@@ -27,10 +33,34 @@ db.connect((err)=>{
     }
 });
 
+// Middleware to verify jwt token:-
+function verifyToken(req,res,next){
+    const token = req.headers['authorization'];
+
+    if(!token){
+        res.status(401).json({message: "Unauthorized"});
+    }
+
+    jwt.verify(token,secretKey,(err,decoded)=>{
+        if(err){
+            return res.status(401).json({message: "Token invalid"});
+        }
+
+        // Token is valid you can access the user information from 'decoded.sub' and 'decoded.username'
+        req.userId = decoded.sub;
+        next();
+    })
+}
+
+
+// Home endpoint:
 app.use('/home',(req,res)=>{
     res.json("Hi this is done");
 })
 
+
+
+// Login endpoint:
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
 
@@ -45,8 +75,14 @@ app.post('/api/login', (req, res) => {
         } else if (results.length === 1) {
             // Check if the password matches
             if (results[0].Dob === password) {
-                // Authentication successful
-                res.status(200).json({ message: 'Login success' });
+                
+                // Authentication successfull generate the jwt token
+                const token = jwt.sign({sub: results[0].id,username: username},secretKey,{
+                    expiresIn: '1h', // token expiration time
+                });
+
+                res.status(200).json({message:'Login success',token})
+
             } else {
                 // Authentication failed
                 res.status(401).json({ message: 'Login failed' });
@@ -60,7 +96,7 @@ app.post('/api/login', (req, res) => {
 
 
 
-// Defining a route to handle employee data submission
+// Employee data submission end point: 
 app.post('/api/employeeData',(req,res)=>{
     const {firstname,lastname,dob,email,address} = req.body;
 
@@ -79,7 +115,7 @@ app.post('/api/employeeData',(req,res)=>{
 })
 
 
-// Define a new route to fetch employee data :-
+// Get employee data using middleware endpoint:
 app.get('/api/getemployeeData',(req,res)=>{
 
     // Define a sql query to select all employees
@@ -99,26 +135,6 @@ app.get('/api/getemployeeData',(req,res)=>{
     });
 });
 
-
-// Define a new route to fetch employee data :-
-app.get('/api/employees',(req,res)=>{
-
-    // Define a sql query to select all employees
-    const sql = 'SELECT * FROM employees';
-
-    // Execute the query to retrieve all employees
-    db.query(sql,(err,result)=>{
-        if(err){
-            console.error("Error fetching data: ",err);
-            res.status(500).json({message: 'Error fetching data'});
-        }else{
-            console.log('Data fetched successfully');
-            console.log(result);
-            // res.status(200).json({message: 'Data fetched successfully'});
-            res.status(200).json(result);
-        }
-    });
-});
 
 
 app.listen(port,()=>{

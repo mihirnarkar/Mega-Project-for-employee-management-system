@@ -11,7 +11,11 @@ import { Router } from '@angular/router';
 export class AdminLoginComponent implements OnInit {
   loginForm!: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private http: HttpClient, private router: Router) { }
+  constructor(
+    private formBuilder: FormBuilder, 
+    private http: HttpClient, 
+    private router: Router
+    ) { }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -22,8 +26,6 @@ export class AdminLoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
-
-     
 
       // Prepare the user credentials
       const username = this.loginForm.get('username')?.value;
@@ -37,8 +39,9 @@ export class AdminLoginComponent implements OnInit {
       // Send a POST request to your backend for authentication
       this.http.post<any>('http://localhost:3000/api/login', { username, password }).subscribe(
         (response) => {
-          if (response.message === 'Login success') {
-            // Authentication successful
+          if (response.message === 'Login success' && response.token) {
+            // Authentication successful store the token in localstorage
+            localStorage.setItem('jwtToken',response.token);
             window.alert('Login success');
             this.router.navigate(['/welcome']);
           } else {
