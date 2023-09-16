@@ -1,0 +1,36 @@
+<body style="background-color: whitesmoke">
+
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header style="margin-top: -11px; margin-bottom: 20px;">
+      <h3><mat-card-title>Login</mat-card-title></h3>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <mat-form-field class="full-width" style="width: 383px; height: 82px; margin-bottom: 10px;">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" placeholder="Enter your username" required>
+            <mat-icon matSuffix>account_circle</mat-icon>
+            <mat-error *ngIf="loginForm?.get('username')?.hasError('required')">Username is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field class="full-width" style="width: 383px; height: 82px; margin-bottom: 10px;">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Enter your password" required>
+            <mat-icon matSuffix>lock</mat-icon>
+            <mat-error *ngIf="loginForm?.get('password')?.hasError('required')">Password is required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row" style="margin-top: 10px;">
+          <button mat-raised-button color="primary" style="padding-left: 30px; padding-right: 30px; padding-top: 10px; padding-bottom: 10px;" type="submit" [disabled]="loginForm.invalid">Login</button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+</body>
