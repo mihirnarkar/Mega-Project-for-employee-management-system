@@ -1,11 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { HttpClient } from '@angular/common/http';
 
-
-
-// Define an interface for your data structure
 interface UserData {
   firstname: string;
   lastname: string;
@@ -21,14 +18,11 @@ interface UserData {
 })
 
 export class EmployeeComponent implements OnInit {
-
   userForm!: FormGroup;
-
   displayedColumns: string[] = ['firstname', 'lastname', 'dob', 'email', 'action'];
   dataSource: MatTableDataSource<UserData> = new MatTableDataSource<UserData>([]);
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
-
     this.userForm = this.formBuilder.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
@@ -58,26 +52,32 @@ export class EmployeeComponent implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-      console.log('Form Submitted:', this.userForm.value);
+      const dob = new Date(this.userForm.get('dob')?.value).toISOString().split('T')[0];
+      const formData = {
+        firstname: this.userForm.get('firstname')?.value,
+        lastname: this.userForm.get('lastname')?.value,
+        contactNo: this.userForm.get('contactNo')?.value,
+        email: this.userForm.get('email')?.value,
+        dob,
+        address: this.userForm.get('address')?.value,
+      };
 
-      const loginUrl = 'http://localhost:3000/api/employeeData';
-
-      this.http.post(loginUrl, this.userForm.value).subscribe(
+      this.http.post('http://localhost:3000/api/employeeData', formData).subscribe(
         (response) => {
-          console.log('Response from server:', response);
-
-          window.alert("Data added");
-
-          // After successful submission, load the data again to refresh the table
+          window.alert('Data added');
           this.loadData();
         },
         (error) => {
           console.error('Error:', error);
         }
-      )
+      );
 
       this.clearForm();
     }
+  }
+
+  clearForm() {
+    this.userForm.reset();
   }
 
   editEmployee(user: UserData) {
@@ -94,11 +94,5 @@ export class EmployeeComponent implements OnInit {
 
   deleteUser(user: UserData) {
     console.log('Delete user:', user);
-  }
-
-  
-  clearForm(){
-    // Reset the form fields
-    this.userForm.reset();
   }
 }
