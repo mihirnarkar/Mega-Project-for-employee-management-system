@@ -9,6 +9,7 @@ interface UserData {
   dob: string;
   email: string;
   address: string;
+  contactno:string;
 }
 
 @Component({
@@ -19,14 +20,14 @@ interface UserData {
 
 export class EmployeeComponent implements OnInit {
   userForm!: FormGroup;
-  displayedColumns: string[] = ['firstname', 'lastname', 'dob', 'email', 'action'];
+  displayedColumns: string[] = ['firstname', 'lastname','contactno','email','dob','address', 'action'];
   dataSource: MatTableDataSource<UserData> = new MatTableDataSource<UserData>([]);
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.userForm = this.formBuilder.group({
       firstname: ['', Validators.required],
       lastname: ['', Validators.required],
-      contactNo: ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      contactno: ['', [Validators.required, Validators.pattern('[0-9]*')]],
       email: ['', [Validators.required, Validators.email]],
       dob: ['', Validators.required],
       address: ['', Validators.required],
@@ -56,7 +57,7 @@ export class EmployeeComponent implements OnInit {
       const formData = {
         firstname: this.userForm.get('firstname')?.value,
         lastname: this.userForm.get('lastname')?.value,
-        contactNo: this.userForm.get('contactNo')?.value,
+        contactno: this.userForm.get('contactno')?.value,
         email: this.userForm.get('email')?.value,
         dob,
         address: this.userForm.get('address')?.value,

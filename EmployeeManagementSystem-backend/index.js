@@ -98,10 +98,10 @@ app.post('/api/login', (req, res) => {
 
 // Employee data submission end point: 
 app.post('/api/employeeData',(req,res)=>{
-    const {firstname,lastname,dob,email,address} = req.body;
+    const {firstname,lastname,contactno,email,dob,address} = req.body;
 
-    const sql = 'INSERT INTO employees(Firstname,Lastname,Email,Dob,Address) VALUES(?,?,?,?,?)';
-    const values = [firstname,lastname,email,dob,address];
+    const sql = 'INSERT INTO employees(Firstname,Lastname,Contactno,Email,Dob,Address) VALUES(?,?,?,?,?,?)';
+    const values = [firstname,lastname,contactno,email,dob,address];
 
     db.query(sql,values,(err,result)=>{
         if(err){
@@ -119,7 +119,7 @@ app.post('/api/employeeData',(req,res)=>{
 app.get('/api/getemployeeData',(req,res)=>{
 
     // Define a sql query to select all employees
-    const sql = 'SELECT Firstname as firstname, Lastname as lastname, Email as email, Dob as dob, Address as address FROM employees';
+    const sql = 'SELECT Firstname as firstname, Lastname as lastname, Email as email, Dob as dob, Address as address, Contactno as contactno FROM employees';
 
     // Execute the query to retrieve all employees
     db.query(sql,(err,result)=>{
