@@ -85,7 +85,22 @@ export class EmployeeComponent implements OnInit {
   }
 
   deleteEmployee(row: UserData) {
-    console.log('Delete employee:', row);
+    // console.log('Delete employee:', row);
+    const confirmDelete = confirm(`Are you sure you want to delete ${row.email} ?`);
+    if(!confirmDelete){
+      return;
+    }
+    const deleteUrl = `http://localhost:3000/api/deleteEmployee/${row.email}`;
+
+    this.http.delete(deleteUrl).subscribe(()=>{
+      console.log(`${row.email} deleted`);
+      this.loadData();
+      window.alert(`${row.email} deleted successfully`);
+    },
+    (error)=>{
+      console.error(`Error deleting ${row.email}`);
+      window.alert(`Error deleting ${row.email}`)
+    });
   }
 
   editUser(user: UserData) {

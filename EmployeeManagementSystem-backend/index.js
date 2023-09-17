@@ -136,6 +136,31 @@ app.get('/api/getemployeeData',(req,res)=>{
 });
 
 
+// delete employee
+app.delete('/api/deleteEmployee/:email', (req, res) => {
+    const email = req.params.email;
+
+    // Defining a SQL query to delete an employee by email
+    const sql = 'DELETE FROM employees WHERE Email = ?';
+    const values = [email];
+
+    // Execute the query to delete an employee
+    db.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Error deleting data:", err);
+            res.status(500).json({ message: "Error deleting data" });
+        } else if (result.affectedRows === 0) {
+            // If no rows were affected, it means the email was not found
+            console.log(`Email ${email} not found`);
+            res.status(404).json({ message: `${email} does not exist` });
+        } else {
+            console.log(`${email} deleted successfully`);
+            res.status(200).json({ message: `${email} deleted successfully` });
+        }
+    });
+});
+
+
 
 app.listen(port,()=>{
     console.log(`server is running at port ${port}`);
