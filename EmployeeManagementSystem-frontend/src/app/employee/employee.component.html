@@ -1,141 +1,120 @@
 <body style="background-color: whitesmoke">
-
   <div class="form-container">
-  
-  
-      <mat-grid-list cols="2" rowHeight="4:3">
-          <mat-grid-tile class="divider-tile" >
-  
-              <!-- Angular material form -->
-              <mat-card class="form-card">
-                  <mat-card-title style="margin-left: 60px; margin-bottom: 10px; margin-top: 30px;margin-left:54px; color: #368d36;"> Employee Form </mat-card-title>
-                  
-                  <mat-card-content>
-  
-                      <hr style="width: 443px;margin-left: 35px;">
-                      <br>
-  
-                      <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
-  
-                          <div class="container_1">
-                              <mat-form-field class="half-width">
-                                  <input matInput placeholder="First Name" formControlName="firstname" required>
-                                  <mat-error *ngIf="userForm?.get('firstname')?.hasError('required')">First Name is required</mat-error>
-                              </mat-form-field>
-  
-                              <mat-form-field class="half-width" style="margin-left: 20px;">
-                                  <input matInput placeholder="Last Name" formControlName="lastname" required>
-                                  <mat-error *ngIf="userForm?.get('lastname')?.hasError('required')">Last Name is required</mat-error>
-                              </mat-form-field>
-  
-                          </div>
-  
-                          <div class="container_2">
-                              <mat-form-field class="half-width">
-                                  <input matInput type="tel" placeholder="Contact No" formControlName="contactno" required pattern="[0-9]*">
-                                  <mat-error *ngIf="userForm?.get('contactno')?.hasError('required')">Contact No is required</mat-error>
-                                  <mat-error *ngIf="userForm?.get('contactno')?.hasError('pattern')">Invalid Contact No</mat-error>
-                              </mat-form-field>
-  
-                              <mat-form-field class="half-width" style="margin-left: 20px;">
-                                  <input matInput type="email" placeholder="Email" formControlName="email" required email>
-                                  <mat-error *ngIf="userForm?.get('email')?.hasError('required')">Email is required</mat-error>
-                                  <mat-error *ngIf="userForm?.get('email')?.hasError('email')">Invalid email format</mat-error>
-                              </mat-form-field>
-                          </div>
-  
-                          <div class="container_3">
-                              <mat-form-field class="half-width" >
-                                  <input matInput type="date" placeholder="Date of Birth" formControlName="dob" style="padding-top: 15px; padding-bottom: 16px;" required>
-                                  <mat-error *ngIf="userForm?.get('dob')?.hasError('required')">Date of Birth is required</mat-error>
-                              </mat-form-field>
-  
-                              <mat-form-field class="half-width" style="margin-left: 20px;">
-                                  <textarea matInput placeholder="Address" formControlName="address" required></textarea>
-                                  <mat-error *ngIf="userForm?.get('address')?.hasError('required')">Address is required</mat-error>
-                              </mat-form-field>
-                          </div>
-  
-                          <button mat-raised-button color="primary" style="margin-top: 10px; margin-left: 34px; padding-left: 197px; padding-right: 197px;" type="submit" [disabled]="!userForm.valid">Submit</button>
-                      </form>
-  
-                  </mat-card-content>
-  
-              </mat-card>
-  
-          </mat-grid-tile>
-  
-          <!-- I want to add divider between them -->
-  
-          <mat-grid-tile>
-  
-               <!-- Angular Material Table starts here-->
-               <div class="mat-elevation-z8" style="margin-bottom: 54px; width: 790px; padding-top: 20px; margin-top: 50px;margin-left: 50px; margin-right: 30px;">
-                  
-                  <mat-table [dataSource]="dataSource" >
-                      <!-- Define your table columns here -->
-                      <ng-container matColumnDef="firstname">
-                          <mat-header-cell *matHeaderCellDef>First name</mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{ row.firstname }}</mat-cell>
-                        </ng-container>
-                        
-                        <ng-container matColumnDef="lastname">
-                          <mat-header-cell *matHeaderCellDef>Last name</mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{ row.lastname }}</mat-cell>
-                        </ng-container>
+    <mat-grid-list cols="2" rowHeight="4:3">
+      <mat-grid-tile class="divider-tile">
+        <!-- Angular material form -->
+        <mat-card class="form-card">
+          <mat-card-title style="margin-left: 60px; margin-bottom: 10px; margin-top: 30px; margin-left: 54px; color: #368d36;">
+            Employee Form
+          </mat-card-title>
 
-                        <ng-container matColumnDef="contactno">
-                          <mat-header-cell *matHeaderCellDef>Contact no</mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{ row.contactno }}</mat-cell>
-                        </ng-container>
+          <mat-card-content>
+            <hr style="width: 443px; margin-left: 35px;">
+            <br>
 
-                        <ng-container matColumnDef="email">
-                          <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
-                        </ng-container>
-  
-                        <ng-container matColumnDef="dob">
-                          <mat-header-cell *matHeaderCellDef>DOB</mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{ row.dob }}</mat-cell>
-                        </ng-container>
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+              <div class="container_1">
+                <mat-form-field class="half-width">
+                  <input matInput placeholder="First Name" formControlName="firstname" required>
+                  <mat-error *ngIf="userForm?.get('firstname')?.hasError('required')">First Name is required</mat-error>
+                </mat-form-field>
 
-                        <ng-container matColumnDef="address">
-                          <mat-header-cell *matHeaderCellDef>Address</mat-header-cell>
-                          <mat-cell *matCellDef="let row">{{ row.address }}</mat-cell>
-                        </ng-container>
-                        
-                    
-                        <ng-container matColumnDef="action">
-                          <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
-                          <mat-cell *matCellDef="let row">
-  
-                            <button mat-icon-button (click)="editEmployee(row)">
-                              <mat-icon>edit</mat-icon>
-                            </button>
-  
-                            <button mat-icon-button (click)="deleteEmployee(row)">
-                              <mat-icon>delete</mat-icon>
-                            </button>
-  
-                          </mat-cell>
-                        </ng-container>
-                    
-                      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                    </mat-table>
-  
-                </div>
-                
-               <!-- Angular Material Table ends here-->
-    
-  
-          </mat-grid-tile>
-          
-        </mat-grid-list>
-  
-  
-      
-  
+                <mat-form-field class="half-width" style="margin-left: 20px;">
+                  <input matInput placeholder="Last Name" formControlName="lastname" required>
+                  <mat-error *ngIf="userForm?.get('lastname')?.hasError('required')">Last Name is required</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="container_2">
+                <mat-form-field class="half-width">
+                  <input matInput type="tel" placeholder="Contact No" formControlName="contactno" required pattern="[0-9]*">
+                  <mat-error *ngIf="userForm?.get('contactno')?.hasError('required')">Contact No is required</mat-error>
+                  <mat-error *ngIf="userForm?.get('contactno')?.hasError('pattern')">Invalid Contact No</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="half-width" style="margin-left: 20px;">
+                  <input matInput type="email" placeholder="Email" formControlName="email" required email>
+                  <mat-error *ngIf="userForm?.get('email')?.hasError('required')">Email is required</mat-error>
+                  <mat-error *ngIf="userForm?.get('email')?.hasError('email')">Invalid email format</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="container_3">
+                <mat-form-field class="half-width">
+                  <input matInput type="date" placeholder="Date of Birth" formControlName="dob"
+                    style="padding-top: 15px; padding-bottom: 16px;" required>
+                  <mat-error *ngIf="userForm?.get('dob')?.hasError('required')">Date of Birth is required</mat-error>
+                </mat-form-field>
+
+                <mat-form-field class="half-width" style="margin-left: 20px;">
+                  <textarea matInput placeholder="Address" formControlName="address" required></textarea>
+                  <mat-error *ngIf="userForm?.get('address')?.hasError('required')">Address is required</mat-error>
+                </mat-form-field>
+              </div>
+
+              <button mat-raised-button color="primary" style="margin-top: 10px; margin-left: 34px; padding-left: 197px; padding-right: 197px;" type="submit" [disabled]="!userForm.valid">
+                {{ isEditMode ? 'Update' : 'Submit' }}
+              </button>
+            </form>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+
+      <!-- I want to add divider between them -->
+
+      <mat-grid-tile>
+        <!-- Angular Material Table starts here-->
+        <div class="mat-elevation-z8" style="margin-bottom: 54px; width: 790px; padding-top: 20px; margin-top: 50px; margin-left: 50px; margin-right: 30px;">
+          <mat-table [dataSource]="dataSource">
+            <!-- Define your table columns here -->
+            <ng-container matColumnDef="firstname">
+              <mat-header-cell *matHeaderCellDef>First name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.firstname }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="lastname">
+              <mat-header-cell *matHeaderCellDef>Last name</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.lastname }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="contactno">
+              <mat-header-cell *matHeaderCellDef>Contact no</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.contactno }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <mat-header-cell *matHeaderCellDef>Email</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.email }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="dob">
+              <mat-header-cell *matHeaderCellDef>DOB</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.dob }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="address">
+              <mat-header-cell *matHeaderCellDef>Address</mat-header-cell>
+              <mat-cell *matCellDef="let row">{{ row.address }}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+              <mat-cell *matCellDef="let row">
+                <button mat-icon-button (click)="editEmployee(row)">
+                  <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button (click)="deleteEmployee(row)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+        </div>
+        <!-- Angular Material Table ends here-->
+      </mat-grid-tile>
+    </mat-grid-list>
   </div>
-  
-  </body>
+</body>

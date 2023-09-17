@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 interface UserData {
   firstname: string;
@@ -9,7 +10,7 @@ interface UserData {
   dob: string;
   email: string;
   address: string;
-  contactno:string;
+  contactno: string;
 }
 
 @Component({
@@ -20,8 +21,9 @@ interface UserData {
 
 export class EmployeeComponent implements OnInit {
   userForm!: FormGroup;
-  displayedColumns: string[] = ['firstname', 'lastname','contactno','email','dob','address', 'action'];
+  displayedColumns: string[] = ['firstname', 'lastname', 'contactno', 'email', 'dob', 'address', 'action'];
   dataSource: MatTableDataSource<UserData> = new MatTableDataSource<UserData>([]);
+  isEditMode: boolean = false; // Add this variable
 
   constructor(private formBuilder: FormBuilder, private http: HttpClient) {
     this.userForm = this.formBuilder.group({
@@ -53,28 +55,79 @@ export class EmployeeComponent implements OnInit {
 
   onSubmit() {
     if (this.userForm.valid) {
-      const dob = new Date(this.userForm.get('dob')?.value).toISOString().split('T')[0];
-      const formData = {
-        firstname: this.userForm.get('firstname')?.value,
-        lastname: this.userForm.get('lastname')?.value,
-        contactno: this.userForm.get('contactno')?.value,
-        email: this.userForm.get('email')?.value,
-        dob,
-        address: this.userForm.get('address')?.value,
-      };
+      const email = this.userForm.get('email')?.value;
 
-      this.http.post('http://localhost:3000/api/employeeData', formData).subscribe(
-        (response) => {
-          window.alert('Data added');
-          this.loadData();
+      // Check if the email already exists in the database
+      this.checkEmailExists(email).subscribe(
+        (exists) => {
+          if (exists) {
+            // Email exists, update the employee
+            this.updateEmployee(email);
+          } else {
+            // Email doesn't exist, add a new employee
+            this.addEmployee();
+          }
         },
         (error) => {
-          console.error('Error:', error);
+          console.error('Error checking email:', error);
         }
       );
-
-      this.clearForm();
     }
+  }
+
+  checkEmailExists(email: string): Observable<boolean> {
+    const checkUrl = `http://localhost:3000/api/checkEmailExists/${email}`;
+    return this.http.get<boolean>(checkUrl);
+  }
+
+  updateEmployee(email: string) {
+    // Get the updated employee data from the form
+    const updatedEmployeeData = {
+      firstname: this.userForm.get('firstname')?.value,
+      lastname: this.userForm.get('lastname')?.value,
+      contactno: this.userForm.get('contactno')?.value,
+      email: this.userForm.get('email')?.value,
+      dob: new Date(this.userForm.get('dob')?.value).toISOString().split('T')[0],
+      address: this.userForm.get('address')?.value,
+    };
+
+    const updateUrl = `http://localhost:3000/api/updateEmployee/${email}`;
+
+    this.http.put(updateUrl, updatedEmployeeData).subscribe(
+      () => {
+        console.log(`${email} updated successfully`);
+        window.alert(`${email} updated successfully`);
+        this.loadData();
+        this.clearForm();
+      },
+      (error) => {
+        console.error(`Error updating ${email}:`, error);
+        window.alert(`Error updating ${email}`);
+      }
+    );
+  }
+
+  addEmployee() {
+    const dob = new Date(this.userForm.get('dob')?.value).toISOString().split('T')[0];
+    const formData = {
+      firstname: this.userForm.get('firstname')?.value,
+      lastname: this.userForm.get('lastname')?.value,
+      contactno: this.userForm.get('contactno')?.value,
+      email: this.userForm.get('email')?.value,
+      dob,
+      address: this.userForm.get('address')?.value,
+    };
+
+    this.http.post('http://localhost:3000/api/employeeData', formData).subscribe(
+      () => {
+        window.alert('Data added');
+        this.loadData();
+        this.clearForm();
+      },
+      (error) => {
+        console.error('Error:', error);
+      }
+    );
   }
 
   clearForm() {
@@ -83,25 +136,34 @@ export class EmployeeComponent implements OnInit {
 
   editEmployee(user: UserData) {
     console.log('Edit employee:', user);
+    // Set the form values for editing
+    this.userForm.patchValue({
+      firstname: user.firstname,
+      lastname: user.lastname,
+      contactno: user.contactno,
+      email: user.email,
+      dob: user.dob,
+      address: user.address,
+    });
+    this.isEditMode = true;
   }
 
   deleteEmployee(row: UserData) {
-    // console.log('Delete employee:', row);
     const confirmDelete = confirm(`Are you sure you want to delete ${row.email} ?`);
-    if(!confirmDelete){
+    if (!confirmDelete) {
       return;
     }
     const deleteUrl = `http://localhost:3000/api/deleteEmployee/${row.email}`;
 
-    this.http.delete(deleteUrl).subscribe(()=>{
+    this.http.delete(deleteUrl).subscribe(() => {
       console.log(`${row.email} deleted`);
       this.loadData();
       window.alert(`${row.email} deleted successfully`);
     },
-    (error)=>{
-      console.error(`Error deleting ${row.email}`);
-      window.alert(`Error deleting ${row.email}`)
-    });
+      (error) => {
+        console.error(`Error deleting ${row.email}`);
+        window.alert(`Error deleting ${row.email}`)
+      });
   }
 
   editUser(user: UserData) {
