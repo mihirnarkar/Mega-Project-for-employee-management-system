@@ -68,7 +68,7 @@ app.post('/api/login', (req, res) => {
     db.query(sql, values, (err, results) => {
         if (err) {
             console.error('Error during login:', err);
-            res.status(500).json({ message: 'An error occurred during login' });
+            res.status(500).json({ message: 'Username/password doesnt match' });
         } else if (results.length === 1) {
             // Check if the password matches
             if (results[0].Dob === password) {
@@ -110,12 +110,13 @@ app.post('/api/employeeData', (req, res) => {
 });
 
 // Check if email exists endpoint:
-app.get('/api/checkEmailExists/:email', (req, res) => {
+app.get('/api/checkEmailExists/:firstname/:email', (req, res) => {
     const email = req.params.email;
+    const firstname = req.params.firstname;
 
     // Query the database to check if the email already exists
-    const sql = 'SELECT COUNT(*) AS count FROM employees WHERE Email = ?';
-    const values = [email];
+    const sql = 'SELECT COUNT(*) AS count FROM employees WHERE Email = ? OR Firstname = ?';
+    const values = [email,firstname];
 
     db.query(sql, values, (err, result) => {
         if (err) {

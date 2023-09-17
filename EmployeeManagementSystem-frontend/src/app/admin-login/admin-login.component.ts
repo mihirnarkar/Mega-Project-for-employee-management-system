@@ -51,7 +51,7 @@ export class AdminLoginComponent implements OnInit {
         },
         (error) => {
           console.error('Error:', error);
-          window.alert('An error occurred during login.');
+          window.alert('Username/password doesnt match');
         }
       );
 

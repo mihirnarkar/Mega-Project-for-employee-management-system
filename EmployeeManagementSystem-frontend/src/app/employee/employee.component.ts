@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, first } from 'rxjs';
 
 interface UserData {
   firstname: string;
@@ -56,9 +56,10 @@ export class EmployeeComponent implements OnInit {
   onSubmit() {
     if (this.userForm.valid) {
       const email = this.userForm.get('email')?.value;
+      const firstname = this.userForm.get('firstname')?.value;
 
       // Check if the email already exists in the database
-      this.checkEmailExists(email).subscribe(
+      this.checkEmailExists(firstname,email).subscribe(
         (exists) => {
           if (exists) {
             // Email exists, update the employee
@@ -75,8 +76,8 @@ export class EmployeeComponent implements OnInit {
     }
   }
 
-  checkEmailExists(email: string): Observable<boolean> {
-    const checkUrl = `http://localhost:3000/api/checkEmailExists/${email}`;
+  checkEmailExists(firstname: string,email: string): Observable<boolean> {
+    const checkUrl = `http://localhost:3000/api/checkEmailExists/${firstname}/${email}`;
     return this.http.get<boolean>(checkUrl);
   }
 
