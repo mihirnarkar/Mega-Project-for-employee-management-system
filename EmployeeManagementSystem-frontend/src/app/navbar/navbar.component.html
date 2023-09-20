@@ -6,6 +6,7 @@
       <span routerLink="/" style="cursor: pointer; margin-right: 10px;">Home</span>
       <span routerLink="/admin-login"  style="cursor: pointer; margin-right: 10px;" *ngIf="!isLoggedIn()">Login</span>
       <span routerLink="/employee"  style="cursor: pointer; margin-right: 10px;" *ngIf="isLoggedIn()">Employee</span>
+      <span routerLink="/employee1"  style="cursor: pointer; margin-right: 10px;" *ngIf="isLoggedIn()">Employee1</span>
       <span routerLink="/welcome" style="cursor: pointer; margin-right: 10px;" *ngIf="isLoggedIn()">Welcome</span>
       <span style="cursor: pointer; margin-left: auto; margin-right: 10px;" *ngIf="isLoggedIn()" (click)="logout()">Logout</span>
      

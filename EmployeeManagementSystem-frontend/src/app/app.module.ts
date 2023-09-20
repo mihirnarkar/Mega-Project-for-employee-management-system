@@ -34,6 +34,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatTableModule } from '@angular/material/table';
 
 import {MatGridListModule, MatGridTile} from '@angular/material/grid-list';
+import { Employee1Component } from './employee1/employee1.component';
 
 
 
@@ -45,7 +46,8 @@ import {MatGridListModule, MatGridTile} from '@angular/material/grid-list';
     WelcomeComponent,
     HomeComponent,
     NavbarComponent,
-    FooterComponent
+    FooterComponent,
+    Employee1Component
   ],
   imports: [
     BrowserModule,
