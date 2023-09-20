@@ -133,6 +133,11 @@ export class EmployeeComponent implements OnInit {
 
   clearForm() {
     this.userForm.reset();
+    Object.keys(this.userForm.controls).forEach((key) => {
+      this.userForm.get(key)?.setErrors(null);
+      this.userForm.get(key)?.markAsPristine();
+      this.userForm.get(key)?.markAsUntouched();
+    });
   }
 
   editEmployee(user: UserData) {
