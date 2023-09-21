@@ -8,15 +8,15 @@ import { Component } from '@angular/core';
 export class Employee1Component {
 
   employees = [
-    {id: 1,firstname: 'Mihir',lastname: 'Narkar',contactno: '8373788371',email: 'Mihirnarkar19@gmail.com',address:'Cotton green'},
-    {id: 2,firstname: 'Srushti',lastname: 'Pagare',contactno: '9899797991',email: 'srushti@gmail.com',address:'Kandivali'}
+    { id: 1, firstname: 'Mihir', lastname: 'Narkar', contactno: '8373788371', email: 'Mihirnarkar19@gmail.com', dob: '1990-01-01', address: 'Cotton green' },
+    { id: 2, firstname: 'Srushti', lastname: 'Pagare', contactno: '9899797991', email: 'srushti@gmail.com', dob: '1995-05-05', address: 'Kandivali' }
   ];
 
   editIndex: number = -1;
   currentlyEditedEmployee: any = null;
 
   addEmployee() {
-    const newEmployee = { id: this.employees.length + 1, firstname: '', lastname: '', contactno: '', email: '', address: '' };
+    const newEmployee = { id: this.employees.length + 1, firstname: '', lastname: '', contactno: '', email: '', dob: '', address: '' };
     this.employees.push(newEmployee);
     this.editEmployee(this.employees.length - 1);
   }

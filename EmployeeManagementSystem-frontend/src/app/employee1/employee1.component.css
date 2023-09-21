@@ -1,21 +1,27 @@
-.container{
-    width: 2100px;
-}
-
-.columnHead{
+.container {
+    width: 100%; /* Adjust the container width as needed */
+  }
+  
+  .columnHead {
     font-size: large;
-}
-
-.columnContent{
+    text-align: center; /* Center-align column headers */
+  }
+  
+  .columnContent {
     font-size: medium;
-    height: 10vh;
-}
-
-/* Add this to your component's CSS file or your global styles.css file */
-.row-buttons {
-    display: flex;
-    justify-content: flex-start; /* Align buttons to the left within the cell */
-    align-items: center; /* Center vertically within the cell */
-    gap: 10px; /* Add spacing between buttons */
-}
+    white-space: nowrap; /* Prevent text from wrapping */
+    max-width: 200px; /* Set a maximum width for columns */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Show ellipsis for overflow text */
+  }
+  
+  /* Apply ellipsis only to span elements, not input elements */
+  .columnContent > span {
+    text-overflow: ellipsis;
+  }
+  
+  /* Add styles for the editing mode */
+  .columnContent > input {
+    width: 100%; /* Make the input field expand to full width */
+  }
   
