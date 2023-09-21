@@ -1,0 +1,21 @@
+.container{
+    width: 2100px;
+}
+
+.columnHead{
+    font-size: large;
+}
+
+.columnContent{
+    font-size: medium;
+    height: 10vh;
+}
+
+/* Add this to your component's CSS file or your global styles.css file */
+.row-buttons {
+    display: flex;
+    justify-content: flex-start; /* Align buttons to the left within the cell */
+    align-items: center; /* Center vertically within the cell */
+    gap: 10px; /* Add spacing between buttons */
+}
+  

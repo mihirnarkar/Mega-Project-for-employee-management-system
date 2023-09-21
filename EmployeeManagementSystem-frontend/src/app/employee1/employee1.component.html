@@ -1,1 +1,52 @@
-This is under construction
+<div class="container">
+    <h2 style="margin-left: 414px; margin-top: 50px; margin-bottom: 30px; font-size: xx-large; ">Employee Management</h2>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th class="columnHead">ID</th>
+                <th class="columnHead">First Name</th>
+                <th class="columnHead">Last Name</th>
+                <th class="columnHead">Contact No</th>
+                <th class="columnHead">Email</th>
+                <th class="columnHead">Address</th>
+                <th class="columnHead" style="width: 300px;">Action</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let employee of employees; let i = index" [ngClass]="{'editing': i === editIndex}">
+                <td class="columnContent">{{ employee.id }}</td> 
+                <td class="columnContent">
+                    <span *ngIf="i !== editIndex">{{ employee.firstname }}</span>
+                    <input *ngIf="i === editIndex " [(ngModel)]="currentlyEditedEmployee.firstname" />
+                </td>
+                <td class="columnContent">
+                    <span *ngIf="i !== editIndex">{{ employee.lastname }}</span>
+                    <input *ngIf="i === editIndex " [(ngModel)]="currentlyEditedEmployee.lastname" />
+                </td>
+                <td class="columnContent">
+                    <span *ngIf="i !== editIndex">{{ employee.contactno }}</span>
+                    <input *ngIf="i === editIndex " [(ngModel)]="currentlyEditedEmployee.contactno"/>
+                </td>
+                <td class="columnContent">
+                    <span *ngIf="i !== editIndex">{{ employee.email }}</span>
+                    <input *ngIf="i === editIndex" [(ngModel)]="currentlyEditedEmployee.email" type="email" />
+                </td>
+                <td class="columnContent">
+                    <span *ngIf="i !== editIndex">{{ employee.address }}</span>
+                    <input *ngIf="i === editIndex " [(ngModel)]="currentlyEditedEmployee.address" />
+                </td>
+                <td class="columnContent">
+                    <div class="row-buttons">
+                        <button *ngIf="i !== editIndex" mat-raised-button color="primary" style="margin-right: 10px;" (click)="editEmployee(i)">Edit</button>
+                        <button *ngIf="i === editIndex" mat-raised-button color="primary" (click)="saveEmployee(i)">Save</button>
+                        <button *ngIf="i === editIndex" mat-raised-button color="accent" (click)="cancelEdit(i)">Cancel</button>
+                        <button mat-raised-button color="warn" (click)="deleteEmployee(i)">Delete</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button  mat-raised-button color="primary" style="margin-left: 60vh; padding-left: 70px; padding-right: 70px; font-size: larger; border-radius: 45px; margin-top: 21px; margin-bottom: 109px; " (click)="addEmployee()">Add Employee</button>
+</div>
