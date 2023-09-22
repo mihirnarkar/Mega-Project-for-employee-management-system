@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-employee1',
@@ -14,17 +15,41 @@ export class Employee1Component {
 
   editIndex: number = -1;
   currentlyEditedEmployee: any = null;
+  employeeForm: FormGroup; // Define the form as a FormGroup
 
+  constructor(private fb: FormBuilder) {
+    // Initialize the form with validation rules:
+    this.employeeForm = this.fb.group({
+      firstname: ['', Validators.required],
+      lastname: ['', Validators.required],
+      contactno: ['', [Validators.required, Validators.pattern('[0-9]*')]],
+      email: ['', [Validators.required, Validators.email]],
+      dob: ['', Validators.required],
+      address: ['', Validators.required],
+    });
+  }
+
+  // Method to check if a form field is touched
+  isFieldTouched(field: string): boolean {
+    return !!this.employeeForm.get(field)?.touched;
+  }
+  
   addEmployee() {
     const newEmployee = { id: this.employees.length + 1, firstname: '', lastname: '', contactno: '', email: '', dob: '', address: '' };
     this.employees.push(newEmployee);
-    this.editEmployee(this.employees.length - 1);
+    this.editEmployee(this.employees.length - 1, true); // Pass true to indicate a new employee
   }
+  
 
-  editEmployee(index: number) {
+  editEmployee(index: number, isNewEmployee: boolean = false) {
     this.editIndex = index;
-    this.currentlyEditedEmployee = { ...this.employees[index] }; // Create a copy of the employee being edited
+    if (isNewEmployee) {
+      this.currentlyEditedEmployee = { ...this.employees[index] };
+    } else {
+      this.currentlyEditedEmployee = { ...this.employees[index] };
+    }
   }
+  
 
   saveEmployee(index: number) {
     if (this.currentlyEditedEmployee) {
