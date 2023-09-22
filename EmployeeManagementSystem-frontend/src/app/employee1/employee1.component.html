@@ -46,8 +46,7 @@
                     <div class="row-buttons">
                         <button *ngIf="i !== editIndex" mat-raised-button color="primary" style="margin-right: 10px;"
                             (click)="editEmployee(i)">Edit</button>
-                        <button *ngIf="i === editIndex" mat-raised-button color="primary" style="margin-right: 10px;" (click)="saveEmployee(i)">Save</button>
-                        <button *ngIf="i === editIndex" mat-raised-button color="accent" style="margin-right: 10px;" (click)="cancelEdit(i)">Cancel</button>
+                        <button *ngIf="i === editIndex" mat-raised-button color="accent" style="margin-right: 10px;" (click)="saveEmployee(i)">Save</button>
                         <button mat-raised-button color="warn" (click)="deleteEmployee(i)">Delete</button>
                     </div>
                 </td>
